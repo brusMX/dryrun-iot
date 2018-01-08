@@ -82,7 +82,7 @@ def iothub_client_telemetry_sample_run():
                 csv_batch_num += 1
 
                 # sleep for 30 secs
-                # time.sleep()
+                time.sleep(30)
             
 
     except IoTHubError as iothub_error:
