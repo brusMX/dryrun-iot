@@ -1,0 +1,7 @@
+{
+    "liftOperation":{{uniqueIdentifier}},
+    "evenTime": {{currentTime}},
+    "speed" : {{torqueFromFile}},
+    "torque" : {{torqueFromFile}},
+    "volts" : {{voltsFromFile}}
+}
