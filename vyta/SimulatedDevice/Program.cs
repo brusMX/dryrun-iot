@@ -19,32 +19,35 @@
         {
             try
             {
-                var data = System.IO.File.ReadAllLines(DataFileName);
-                foreach(var d in data)
-                { 
-                    var line = d.Split(',');
-                    var currentTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                    var eventData = new
+                while (true)
+                {
+                    var data = System.IO.File.ReadAllLines(DataFileName);
+                    foreach (var d in data)
                     {
-                        liftOperation = Guid.NewGuid(),
-                        eventTime = currentTime,
-                        speed = line[1],
-                        torque = line[2],
-                        volts = line[3]
-                    };
+                        var line = d.Split(',');
+                        var currentTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                        var eventData = new
+                        {
+                            liftOperation = Guid.NewGuid(),
+                            eventTime = currentTime,
+                            speed = line[1],
+                            torque = line[2],
+                            volts = line[3]
+                        };
 
-                    var messageString = JsonConvert.SerializeObject(eventData);
-                    var message = new Message(Encoding.ASCII.GetBytes(messageString));
+                        var messageString = JsonConvert.SerializeObject(eventData);
+                        var message = new Message(Encoding.ASCII.GetBytes(messageString));
 
-                    await _deviceClient.SendEventAsync(message);
-                    Console.WriteLine("{0} > Sending message: {1}", currentTime, messageString);
+                        await _deviceClient.SendEventAsync(message);
+                        Console.WriteLine("{0} > Sending message: {1}", currentTime, messageString);
 
-                    await Task.Delay(1000);
+                        await Task.Delay(1000);
+                    }
+                    await Task.Delay(30000);
+                    runs = runs + 1;
+                    Console.WriteLine($"\nStarting simulation #{runs}");
                 }
-                await Task.Delay(30000);
-                int num = runs++;
-                Console.WriteLine($"\nStarting simulation #{num}");
-                SendDeviceToCloudMessagesAsync(num);
+                
             }
             catch (FileNotFoundException ex)
             {
