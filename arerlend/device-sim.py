@@ -42,14 +42,14 @@ def iothub_client_telemetry_sample_run():
         print ( "IoT Hub device sending periodic messages, press Ctrl-C to exit" )
         message_counter = 0
 
-        with open(csv_path,'r') as f:
-            
-            # get rid of header
-            f.readline()
+        with open(csv_path,'r') as f:     
+
+            csv_batch_num = 0
             
             while True:
-                
-                csv_batch_num = 0
+
+                # get rid of header
+                f.readline()
 
                 for line in f:
                     index, speed, torque, volts = line.strip().split(',')
@@ -79,13 +79,10 @@ def iothub_client_telemetry_sample_run():
                 # seek to start
                 f.seek(0,0)
 
-                # get rid of header
-                f.readline()
-
                 csv_batch_num += 1
 
                 # sleep for 30 secs
-                time.sleep(30)
+                # time.sleep()
             
 
     except IoTHubError as iothub_error:
